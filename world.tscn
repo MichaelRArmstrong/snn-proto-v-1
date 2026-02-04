@@ -1,9 +1,13 @@
 [gd_scene format=3 uid="uid://cdnllbuklr8j4"]
 
 [ext_resource type="PackedScene" uid="uid://dxbraxskl6gel" path="res://creature.tscn" id="1_f3sb7"]
+[ext_resource type="PackedScene" uid="uid://xox1poajom5e" path="res://food.tscn" id="2_fj7yv"]
 
 [node name="World" type="Node2D" unique_id=669835055]
 
 [node name="Creature" parent="." unique_id=1773230353 instance=ExtResource("1_f3sb7")]
 position = Vector2(543, 312)
 speed = 10.0
+
+[node name="Food" parent="." unique_id=854151370 instance=ExtResource("2_fj7yv")]
+position = Vector2(491, 209)
