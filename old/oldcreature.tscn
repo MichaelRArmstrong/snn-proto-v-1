@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://dxbraxskl6gel"]
 
-[ext_resource type="Script" uid="uid://d0ksmbplq8m1v" path="res://creature.gd" id="1_nugsn"]
+[ext_resource type="Script" uid="uid://d0ksmbplq8m1v" path="res://old/oldcreature.gd" id="1_nugsn"]
 [ext_resource type="Texture2D" uid="uid://bxe6ga52xjn0y" path="res://Primitives/Triangle/Triangle-0001.png" id="2_1k0n7"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_w7hms"]

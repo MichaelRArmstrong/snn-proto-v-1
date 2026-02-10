@@ -1,0 +1,28 @@
+[gd_scene format=3 uid="uid://rcpkywwjqj71"]
+
+[ext_resource type="Script" uid="uid://gayh2jda7b0m" path="res://Scripts/agent.gd" id="1_dhb2b"]
+[ext_resource type="Texture2D" uid="uid://bxe6ga52xjn0y" path="res://Primitives/Triangle/Triangle-0001.png" id="2_8l2ru"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_fj7yv"]
+radius = 21.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_tlwt5"]
+radius = 21.0
+
+[node name="Agent" type="Node2D" unique_id=669835055]
+script = ExtResource("1_dhb2b")
+
+[node name="CharacterBody2D" type="CharacterBody2D" parent="." unique_id=1733959178]
+
+[node name="mouth" type="Area2D" parent="CharacterBody2D" unique_id=426256251]
+
+[node name="mouthCollision" type="CollisionShape2D" parent="CharacterBody2D/mouth" unique_id=810152474]
+position = Vector2(0, 2)
+shape = SubResource("CircleShape2D_fj7yv")
+
+[node name="Body" type="CollisionShape2D" parent="CharacterBody2D" unique_id=942223004]
+position = Vector2(0.07, 3)
+shape = SubResource("CircleShape2D_tlwt5")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=408843784]
+texture = ExtResource("2_8l2ru")
