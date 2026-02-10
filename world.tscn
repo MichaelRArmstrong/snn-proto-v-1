@@ -11,3 +11,9 @@ speed = 10.0
 
 [node name="Food" parent="." unique_id=854151370 instance=ExtResource("2_fj7yv")]
 position = Vector2(491, 209)
+
+[node name="Food2" parent="." unique_id=1117870988 instance=ExtResource("2_fj7yv")]
+position = Vector2(270, 289)
+
+[node name="Food3" parent="." unique_id=293820295 instance=ExtResource("2_fj7yv")]
+position = Vector2(873, 209)

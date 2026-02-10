@@ -105,8 +105,8 @@ func _physics_process(delta):
 			else:
 				right_motor_input += 0.3
 				
-	left_motor_input = max(0.0, left_motor_input - left_inhibition)
-	right_motor_input = max(0.0, right_motor_input - right_inhibition)
+	left_motor_input = max(0.0, left_motor_input)
+	right_motor_input = max(0.0, right_motor_input)
 				
 	var left_motor_spike = left_motor.step(left_motor_input)
 	var right_motor_spike = right_motor.step(right_motor_input)
@@ -114,12 +114,8 @@ func _physics_process(delta):
 	var torque := 0.0
 	
 	if left_motor_spike:
-		right_inhibition += 1.2
-		left_inhibition = 0.0
 		torque -= 1.0
 	if right_motor_spike:
-		left_inhibition += 1.2
-		right_inhibition = 0.0
 		torque += 1.0
 	
 	angular_velocity += torque * 3.0
@@ -135,9 +131,6 @@ func _physics_process(delta):
 	
 	prune_spikes(left_spike_times, time_now)
 	prune_spikes(right_spike_times, time_now)
-	
-	left_inhibition *= 0.85
-	right_inhibition *= 0.85
 	
 	#add hunger reward on food consumption
 
