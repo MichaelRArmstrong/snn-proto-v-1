@@ -1,6 +1,8 @@
 extends Node
 # Update order
 
+class_name Network
+
 #Sensor neurons: 4, 
 #> food on left/right - 2
 #> obstacle proximity - 1
@@ -70,5 +72,11 @@ func _init() -> void:
 	
 	return
 
-func update() -> void: #update funciton, could handle STDP/synaptic weight changes here idk 
+func update(delta: float) -> void: #update funciton, could handle STDP/synaptic weight changes here idk 
+	#sensor step
+	lsensor_neuron.step(delta)
+	rsensor_neuron.step(delta)
+	
+	#hidden step
+	
 	return

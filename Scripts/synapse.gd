@@ -10,7 +10,7 @@ var weight := 0.0
 var pre_syn_neuron
 var post_syn_neuron
 
-func _init(pre: Neuron, post: Neuron, w: float = 0.0) -> void:
+func _init(pre: Neuron, post: Neuron, w: float = 1.0) -> void:
 		weight = w
 		pre_syn_neuron = pre
 		post_syn_neuron = post

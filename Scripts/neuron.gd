@@ -19,7 +19,7 @@ func step(delta: float, input_current = null) -> bool:
 		v += input_current #Note: overwrites/ignores the incoming_v
 	
 	#leak
-	v = max(v-leak,v_rest)
+	v = max(v*leak,v_rest)
 	
 	#fire
 	if v >= v_thresh:
@@ -27,6 +27,6 @@ func step(delta: float, input_current = null) -> bool:
 		spiked = true
 		return true
 	
-	
+	spiked = false
 	return false
 	
