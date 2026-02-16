@@ -6,25 +6,28 @@ class_name Neuron
 var v := 0.0 #membrane potential
 var v_rest := 0.0 # resting potential
 var v_thresh := 1.0 #threshold potential
-var leak := 0.95 #decay over time (New Value =max (Current Value-S,T)))
+var leak_rate := 0.2 #decay over time 
 var spiked := false
+var last_spike_time := 0.0
 
-var incoming_v := 0.0 #needs to be set before step is called on each neuron
+var input_current := 0.0 #for sensor neurons this will be set by the sensors, teh rest will recieve this from their synapses, probably
 
-func step(delta: float, input_current = null) -> bool:
+signal spiked_signal
+
+func step(delta: float, current_time: float) -> bool:
 	#integrate
-	if input_current == null:
-		v += incoming_v
-	else:
-		v += input_current #Note: overwrites/ignores the incoming_v
+	v += input_current
+	input_current = 0.0 
 	
 	#leak
-	v = max(v*leak,v_rest)
+	v -= v * leak_rate * delta
 	
 	#fire
 	if v >= v_thresh:
 		v =  0.0
 		spiked = true
+		last_spike_time = current_time
+		emit_signal("spiked_signal", self)
 		return true
 	
 	spiked = false

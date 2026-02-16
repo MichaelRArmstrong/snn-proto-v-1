@@ -1,19 +1,28 @@
-extends Node2D
+extends CharacterBody2D
 # Sensors inputs + Motors outputs
 
 #network with all the neurons and synapses. TODO: add necessary helper functions for accessing and affecting both lists and individuals
-var snn := Network.new()
+var snn
+
+#movement variables
+@export var speed := 60.0
+@export var turn_speed := 2.0
+var angular_velocity := 0.0
 
 #sensor variables
 const SENSOR_ANGLE := deg_to_rad(30)
 const SENSOR_RANGE := 120.0
 const SENSOR_CURRENT := 0.4
 
+signal food_eaten
 
+func _ready() -> void:
+	snn = Network.new()
+	add_child(snn)
 
 func _physics_process(delta: float) -> void:
-	snn.lsensor_neuron.incoming_v = sense_food(true)
-	snn.rsensor_neuron.incoming_v = sense_food(false)
+	snn.lsensor_neuron.input_current = sense_food(true)
+	snn.rsensor_neuron.input_current = sense_food(false)
 	
 	#network update loop
 	snn.update(delta)
@@ -23,6 +32,24 @@ func _physics_process(delta: float) -> void:
 	
 	if snn.rsensor_neuron.spiked:
 		print("Right Spiked")
+	
+	
+	var torque := 0.0
+	if snn.lmotor_neuron.spiked:
+		torque -= 1.0
+	if snn.rmotor_neuron.spiked:
+		torque += 1.0
+	
+	angular_velocity += torque * 3.0
+	angular_velocity *= 0.9
+	
+	rotation += angular_velocity * delta
+	
+	#move forward
+	var forward = Vector2.UP.rotated(rotation)
+	velocity = forward * speed
+	
+	move_and_slide()
 	
 	return
 
@@ -61,3 +88,12 @@ func sense_food(is_left: bool) -> float:
 		best_strength = max(best_strength, strength)
 	
 	return best_strength  
+
+func _on_mouth_area_entered(area: Area2D):
+	if area.is_in_group("food"):
+		eat_food(area)
+
+func eat_food(food):
+	#emit reward signal
+	food_eaten.emit(1.0)
+	food.queue_free()

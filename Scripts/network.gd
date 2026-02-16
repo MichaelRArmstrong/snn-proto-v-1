@@ -3,6 +3,8 @@ extends Node
 
 class_name Network
 
+var global_time := 0.0
+
 #Sensor neurons: 4, 
 #> food on left/right - 2
 #> obstacle proximity - 1
@@ -28,7 +30,7 @@ var synapse_array := []
 func _init() -> void:
 	for i in range(HIDDEN_COUNT):
 		hidden_neurons.append(Neuron.new())
-	
+	global_time = 0.0
 # In the networks constructor (here) i need it to:
 # > setup sensor to hidden synapse connections
 # > setup synapse connections from hidden to hidden
@@ -41,7 +43,9 @@ func _init() -> void:
 		while h in s_to_h:
 			h = hidden_neurons.pick_random() #should work ¯\_ツ)_/¯
 	
-		synapse_array.append(Synapse.new(lsensor_neuron, h))
+		var s = Synapse.new(lsensor_neuron, h)
+		add_child(s)
+		synapse_array.append(s)
 		s_to_h.append(h)
 	s_to_h.clear()
 	for i in 4: #Right sensor
@@ -49,7 +53,9 @@ func _init() -> void:
 		while h in s_to_h:
 			h = hidden_neurons.pick_random() 
 	
-		synapse_array.append(Synapse.new(rsensor_neuron, h))
+		var s = Synapse.new(rsensor_neuron, h)
+		add_child(s)
+		synapse_array.append(s)
 		s_to_h.append(h)
 	
 	#hidden to hidden
@@ -60,48 +66,39 @@ func _init() -> void:
 			while  h2 == h or h2 in h_to_h:
 				h2 = hidden_neurons.pick_random() #pick a random neuron besides self and not already connected
 			
-			synapse_array.append(Synapse.new(h,h2))
+			var s = Synapse.new(h, h2)
+			add_child(s)
+			synapse_array.append(s)
 			h_to_h.append(h2)
 	
 	#hidden to motor
 	var h_to_m := []
 	#for now all hidden to both motors with random weights
 	for h in hidden_neurons:
-		synapse_array.append(Synapse.new(h, lmotor_neuron, randf_range(0.0,1.0)))
-		synapse_array.append(Synapse.new(h, rmotor_neuron, randf_range(0.0,1.0)))
+		var lms = Synapse.new(h, lmotor_neuron)
+		add_child(lms)
+		synapse_array.append(lms)
+		var rms = Synapse.new(h, rmotor_neuron)
+		add_child(rms)
+		synapse_array.append(rms)
 	
 	return
 
 func update(delta: float) -> void: #update funciton, could handle STDP/synaptic weight changes here idk 
+	global_time += delta
+	
 	#sensor step
-	lsensor_neuron.step(delta)
-	rsensor_neuron.step(delta)
+	lsensor_neuron.step(delta, global_time)
+	rsensor_neuron.step(delta, global_time)
 	
 	#hidden step
-	#for each hidden neuron, step, then afterwards, for any and all that are spiked,
-	# go through all synapses and see if they are connected to any of them. Then 
-	#
-	var spiked_h_neurons := []
 	for hidden in hidden_neurons:
-		hidden.step(delta)
-		if hidden.spiked == true:
-			spiked_h_neurons.append(hidden)
+		hidden.step(delta, global_time)
+	#synapse updates should occur naturally on neuron spikes
 	
-	for s_h in spiked_h_neurons:
-		for synapse in synapse_array:
-			#check if the hidden neuron that spiked is the pre synaptic neuron to this synapse or post synaptic, if both are false the synapse isnt connected
-			var pre = true if synapse.pre_syn_neuron == s_h else false
-			var post = true if synapse.post_syn_neuron == s_h else false
-			#if this spiked neuron is connected to this synapse as either pre or post, update the synapse, inputting which one it is that spiked
-			if pre or post == true:
-				synapse.step(pre)	
-			
-			#NOTE: I worry this may be incorrect since im not directly comparing the times at
-			# which the spikes occur but instead assuming the first one to be evaluated will be 
-			# the first one to spike. If anything goes wrong with the learning mechanism,
-			# blame this first probaly
-	
-	
+	#motor step
+	lmotor_neuron.step(delta, global_time)
+	rmotor_neuron.step(delta, global_time)
 	
 	
 	

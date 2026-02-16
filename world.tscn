@@ -1,12 +1,52 @@
 [gd_scene format=3 uid="uid://cdnllbuklr8j4"]
 
 [ext_resource type="PackedScene" uid="uid://rcpkywwjqj71" path="res://Scenes/agent.tscn" id="1_f3sb7"]
-[ext_resource type="PackedScene" uid="uid://xox1poajom5e" path="res://old/old food.tscn" id="2_fj7yv"]
+[ext_resource type="PackedScene" uid="uid://xox1poajom5e" path="res://Scenes/food.tscn" id="2_fj7yv"]
 
 [node name="World" type="Node2D" unique_id=1370418284]
 
 [node name="Agent" parent="." unique_id=669835055 instance=ExtResource("1_f3sb7")]
 position = Vector2(518, 344)
+speed = 10.0
 
-[node name="Food" parent="." unique_id=854151370 instance=ExtResource("2_fj7yv")]
-position = Vector2(564, 285)
+[node name="Food" parent="." unique_id=854151370 groups=["food"] instance=ExtResource("2_fj7yv")]
+position = Vector2(546, 187)
+
+[node name="Food2" parent="." unique_id=658198892 instance=ExtResource("2_fj7yv")]
+position = Vector2(412, 210)
+
+[node name="Food3" parent="Food2" unique_id=427590311 instance=ExtResource("2_fj7yv")]
+position = Vector2(121.69745, -96.812836)
+
+[node name="Food3" parent="Food2/Food3" unique_id=1521291864 instance=ExtResource("2_fj7yv")]
+position = Vector2(88.86157, -18.707672)
+
+[node name="Food3" parent="Food2/Food3/Food3" unique_id=1368772981 instance=ExtResource("2_fj7yv")]
+position = Vector2(62.358887, 53.005096)
+
+[node name="Food3" parent="." unique_id=537647979 instance=ExtResource("2_fj7yv")]
+position = Vector2(754, 185)
+
+[node name="Food4" parent="." unique_id=71696866 instance=ExtResource("2_fj7yv")]
+position = Vector2(706, 391)
+
+[node name="Food5" parent="." unique_id=1334863524 instance=ExtResource("2_fj7yv")]
+position = Vector2(472, 435)
+
+[node name="Food6" parent="." unique_id=1859070191 instance=ExtResource("2_fj7yv")]
+position = Vector2(296, 439)
+
+[node name="Food7" parent="." unique_id=2081463832 instance=ExtResource("2_fj7yv")]
+position = Vector2(494, 48)
+
+[node name="Food8" parent="." unique_id=1151442354 instance=ExtResource("2_fj7yv")]
+position = Vector2(216, 114)
+
+[node name="Food9" parent="." unique_id=194998333 instance=ExtResource("2_fj7yv")]
+position = Vector2(610.0872, 155.27945)
+
+[node name="Food3" parent="Food9" unique_id=2034598253 instance=ExtResource("2_fj7yv")]
+position = Vector2(-88.86157, 84.1846)
+
+[node name="Food3" parent="Food9/Food3" unique_id=954121364 instance=ExtResource("2_fj7yv")]
+position = Vector2(67.03589, 51.446167)

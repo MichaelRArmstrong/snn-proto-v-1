@@ -25,8 +25,6 @@ const SENSOR_CURRENT := 0.4
 const STRONG_INPUT := 0.5
 const WEAK_INPUT := 0.2
 
-var foods := []
-
 const RATE_WINDOW := 1.0 #seconds
 
 var left_spike_times: Array[float] = []
