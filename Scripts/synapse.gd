@@ -16,3 +16,10 @@ func _init(pre: Neuron, post: Neuron, w: float = 1.0) -> void:
 		post_syn_neuron = post
 
 #update func probably for adjusting weights based on incoming values?
+func step(pre_spiked: bool):
+	if pre_spiked:
+		#strengthen weight
+		return
+	else:
+		#weaken weight
+		return

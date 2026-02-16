@@ -9,4 +9,4 @@
 position = Vector2(518, 344)
 
 [node name="Food" parent="." unique_id=854151370 instance=ExtResource("2_fj7yv")]
-position = Vector2(484, 302)
+position = Vector2(564, 285)

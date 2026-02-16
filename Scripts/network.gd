@@ -78,5 +78,33 @@ func update(delta: float) -> void: #update funciton, could handle STDP/synaptic 
 	rsensor_neuron.step(delta)
 	
 	#hidden step
+	#for each hidden neuron, step, then afterwards, for any and all that are spiked,
+	# go through all synapses and see if they are connected to any of them. Then 
+	#
+	var spiked_h_neurons := []
+	for hidden in hidden_neurons:
+		hidden.step(delta)
+		if hidden.spiked == true:
+			spiked_h_neurons.append(hidden)
+	
+	for s_h in spiked_h_neurons:
+		for synapse in synapse_array:
+			#check if the hidden neuron that spiked is the pre synaptic neuron to this synapse or post synaptic, if both are false the synapse isnt connected
+			var pre = true if synapse.pre_syn_neuron == s_h else false
+			var post = true if synapse.post_syn_neuron == s_h else false
+			#if this spiked neuron is connected to this synapse as either pre or post, update the synapse, inputting which one it is that spiked
+			if pre or post == true:
+				synapse.step(pre)	
+			
+			#NOTE: I worry this may be incorrect since im not directly comparing the times at
+			# which the spikes occur but instead assuming the first one to be evaluated will be 
+			# the first one to spike. If anything goes wrong with the learning mechanism,
+			# blame this first probaly
+	
+	
+	
+	
+	
+	
 	
 	return
