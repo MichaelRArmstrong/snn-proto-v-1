@@ -28,8 +28,21 @@ var rmotor_neuron := Neuron.new()
 var synapse_array := []
 
 func _init() -> void:
+	#assigning names
+	lsensor_neuron.neuron_name = "L_Sensor"
+	rsensor_neuron.neuron_name = "R_Sensor"
+	lmotor_neuron.neuron_name = "L_Motor"
+	rmotor_neuron.neuron_name = "R_Motor"
+	
 	for i in range(HIDDEN_COUNT):
-		hidden_neurons.append(Neuron.new())
+		var h = Neuron.new()
+		if i < 10:
+			h.neuron_name = "Hidden_%02d" % i
+		else:
+			h.neuron_name = "Hidden_%s" % i
+		hidden_neurons.append(h)
+
+	
 	global_time = 0.0
 # In the networks constructor (here) i need it to:
 # > setup sensor to hidden synapse connections

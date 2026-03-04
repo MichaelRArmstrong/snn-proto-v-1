@@ -1,7 +1,7 @@
 extends CharacterBody2D
 # Sensors inputs + Motors outputs
 
-#network with all the neurons and synapses. TODO: add necessary helper functions for accessing and affecting both lists and individuals
+#network with all the neurons and synapses. 
 var snn
 
 #movement variables
@@ -19,6 +19,11 @@ signal food_eaten
 func _ready() -> void:
 	snn = Network.new()
 	add_child(snn)
+	
+	var debug_window = preload("res://Scenes/SNNDebugWindow.tscn").instantiate()
+	debug_window.set_network(snn)
+	add_child(debug_window)
+	
 
 func _physics_process(delta: float) -> void:
 	snn.lsensor_neuron.input_current = sense_food(true)
