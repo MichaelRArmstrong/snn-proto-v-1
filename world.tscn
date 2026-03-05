@@ -1,16 +1,11 @@
 [gd_scene format=3 uid="uid://cdnllbuklr8j4"]
 
 [ext_resource type="PackedScene" uid="uid://rcpkywwjqj71" path="res://Scenes/agent.tscn" id="1_f3sb7"]
-[ext_resource type="PackedScene" uid="uid://xox1poajom5e" path="res://Scenes/food.tscn" id="2_fj7yv"]
+[ext_resource type="Script" uid="uid://dfb2ipwpchtcy" path="res://Scripts/environment.gd" id="1_fj7yv"]
 
 [node name="World" type="Node2D" unique_id=1370418284]
+script = ExtResource("1_fj7yv")
 
 [node name="Agent" parent="." unique_id=669835055 instance=ExtResource("1_f3sb7")]
-position = Vector2(518, 344)
-speed = 10.0
-
-[node name="Food" parent="." unique_id=854151370 instance=ExtResource("2_fj7yv")]
-position = Vector2(490, 230)
-
-[node name="Food2" parent="." unique_id=1102078326 instance=ExtResource("2_fj7yv")]
-position = Vector2(416, 144)
+position = Vector2(267, 267)
+turn_speed = 10.0

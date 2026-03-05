@@ -1,2 +1,2 @@
 extends Node
-# Rewards
+#Enforce environment bounds and spawn food

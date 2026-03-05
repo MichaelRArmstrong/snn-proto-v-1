@@ -11,6 +11,8 @@ var all_neurons := []
 var selected_neuron = null
 
 func _ready():
+	process_mode = Node.PROCESS_MODE_ALWAYS
+	
 	title = "SNN Debugger"
 	size = Vector2i(600,600)
 	position = Vector2i(20, 20)

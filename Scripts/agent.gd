@@ -17,6 +17,7 @@ const SENSOR_CURRENT := 0.4
 signal food_eaten
 
 func _ready() -> void:
+	Engine.time_scale = 0.25
 	snn = Network.new()
 	add_child(snn)
 	

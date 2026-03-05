@@ -4,15 +4,16 @@
 [ext_resource type="Texture2D" uid="uid://bxe6ga52xjn0y" path="res://Primitives/Triangle/Triangle-0001.png" id="2_8l2ru"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_fj7yv"]
-radius = 21.0
+radius = 6.0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_tlwt5"]
-radius = 21.0
+radius = 6.0
 
 [node name="Agent" type="CharacterBody2D" unique_id=1733959178]
 script = ExtResource("1_dhb2b")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=408843784]
+scale = Vector2(0.375, 0.375)
 texture = ExtResource("2_8l2ru")
 
 [node name="mouth" type="Area2D" parent="." unique_id=426256251]
@@ -22,7 +23,7 @@ position = Vector2(0, 2)
 shape = SubResource("CircleShape2D_fj7yv")
 
 [node name="Body" type="CollisionShape2D" parent="." unique_id=942223004]
-position = Vector2(0.07, 3)
+position = Vector2(0, 2)
 shape = SubResource("CircleShape2D_tlwt5")
 
 [connection signal="area_entered" from="mouth" to="." method="_on_mouth_area_entered"]
