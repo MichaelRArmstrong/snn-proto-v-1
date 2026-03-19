@@ -4,9 +4,11 @@ extends Node
 #Dish bounds
 @export var dish_center := Vector2(270,270)
 @export var dish_radius := 400
+@export var deadzone_radius := 50
 
 #Food
 @export var food_scene: PackedScene
+@export var deadzone: Node2D
 @export var food_count := 300
 
 func _ready():
@@ -29,7 +31,7 @@ func random_dish_position() -> Vector2:
 	var x = randi_range(dish_center.x - dish_radius, dish_center.x + dish_radius)
 	var y = randi_range(dish_center.y - dish_radius, dish_center.y + dish_radius)
 	var rand_pos = Vector2(x,y)
-	while rand_pos.distance_to(dish_center) > dish_radius:
+	while rand_pos.distance_to(dish_center) > dish_radius or rand_pos.distance_to(deadzone.global_position) < deadzone_radius:
 		x = randi_range(dish_center.x - dish_radius, dish_center.x + dish_radius)
 		y = randi_range(dish_center.y - dish_radius, dish_center.y + dish_radius)
 		rand_pos = Vector2(x,y)

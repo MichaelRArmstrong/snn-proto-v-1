@@ -11,8 +11,8 @@ var angular_velocity := 0.0
 
 #sensor variables
 const SENSOR_ANGLE := deg_to_rad(30)
-const SENSOR_RANGE := 120.0
-const SENSOR_CURRENT := 0.4
+const SENSOR_RANGE := 40.0
+const SENSOR_CURRENT := 0.2
 
 signal food_eaten
 

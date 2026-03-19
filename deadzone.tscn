@@ -1,0 +1,9 @@
+[gd_scene format=3 uid="uid://caayhyrk5v3ol"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_hpu3u"]
+radius = 38.470768
+
+[node name="Deadzone" type="Area2D" unique_id=545176231]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=188973778]
+shape = SubResource("CircleShape2D_hpu3u")
