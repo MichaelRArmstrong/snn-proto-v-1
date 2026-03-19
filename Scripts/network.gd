@@ -85,7 +85,7 @@ func _init() -> void:
 			h_to_h.append(h2)
 	
 	#hidden to motor
-	var h_to_m := []
+	var h_to_m := [] #TODO: is this wrong i might not be checkign for overlaps im not reading into it rn tho glhf
 	#for now all hidden to both motors with random weights
 	for h in hidden_neurons:
 		var lms = Synapse.new(h, lmotor_neuron)
