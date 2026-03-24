@@ -2,15 +2,14 @@
 
 [ext_resource type="PackedScene" uid="uid://rcpkywwjqj71" path="res://Scenes/agent.tscn" id="1_f3sb7"]
 [ext_resource type="Script" uid="uid://dfb2ipwpchtcy" path="res://Scripts/environment.gd" id="1_fj7yv"]
-[ext_resource type="PackedScene" uid="uid://xox1poajom5e" path="res://Scenes/food.tscn" id="2_5a7ea"]
 [ext_resource type="PackedScene" uid="uid://caayhyrk5v3ol" path="res://deadzone.tscn" id="4_8j60k"]
 
-[node name="World" type="Node2D" unique_id=1370418284 node_paths=PackedStringArray("deadzone")]
+[node name="World" type="Node2D" unique_id=1370418284]
 script = ExtResource("1_fj7yv")
 dish_radius = 250
-food_scene = ExtResource("2_5a7ea")
-deadzone = NodePath("Deadzone")
-food_count = 2000
+dish_resolution = 10
+metadata/_edit_horizontal_guides_ = [539.0]
+metadata/_edit_vertical_guides_ = [540.0]
 
 [node name="Agent" parent="." unique_id=669835055 instance=ExtResource("1_f3sb7")]
 position = Vector2(267, 267)
