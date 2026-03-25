@@ -47,6 +47,9 @@ func update_eligibility(delta_time: float): #eligibility meaning how much the re
 		eligibility += magnitude   # < potentiation
 	else:
 		eligibility -= magnitude  # < depression
+	
+	#eligibility decay
+	eligibility *= 0.95
 
 func _on_food_eaten(reward: float):
 	weight += reward * eligibility

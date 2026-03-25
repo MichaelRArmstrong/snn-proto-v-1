@@ -11,8 +11,8 @@ var angular_velocity := 0.0
 
 #sensor variables
 const SENSOR_ANGLE := deg_to_rad(30)
-const SENSOR_RANGE := 120.0
-const SENSOR_CURRENT := 0.4
+const SENSOR_RANGE := 40.0
+const SENSOR_CURRENT := 0.2
 
 signal food_eaten
 
@@ -73,27 +73,28 @@ func get_sensor_directions(is_left: bool) -> Vector2:
 	return Vector2.UP.rotated(rotation + angle)
 
 func sense_food(is_left: bool) -> float:
+	 #look for higher density of food in sensor cone
 	var dir = get_sensor_directions(is_left)
 	var foods = get_tree().get_nodes_in_group("food")
 	
-	var best_strength := 0.0
+	var total_strength := 0.0
 	
 	for food in foods:
 		var to_food = food.global_position - global_position
 		var distance = to_food.length()
-	
+		
 		if distance > SENSOR_RANGE:
 			continue
-	
+		
 		var alignment = dir.normalized().dot(to_food.normalized())
 		if alignment <= 0.0:
 			continue
-	
-		#strength is higher when food is close and aligned
+		
 		var strength = alignment * (1.0 - distance / SENSOR_RANGE)
-		best_strength = max(best_strength, strength)
+		total_strength += strength
 	
-	return best_strength  
+	#this normalises so a single close-aligned food has a lower value where as a dense cluster cwould be closer to a high value closer to 1.0, 
+	return clamp(total_strength / 5.0, 0.0, 1.0)
 
 func _on_mouth_area_entered(area: Area2D):
 	if area.is_in_group("food"):
