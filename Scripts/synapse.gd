@@ -39,7 +39,7 @@ func _on_post_spike(neuron):
 
 func update_eligibility(delta_time: float): #eligibility meaning how much the reward will affect the weight of the synapse once recievedd
 	#20ms STDP window
-	var tau = 0.02 
+	var tau = 0.20 
 	#always between 0 and 1
 	var magnitude = exp(-abs(delta_time) / tau) 
 	
