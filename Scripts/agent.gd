@@ -66,7 +66,7 @@ func _physics_process(delta: float) -> void:
 	return
 
 func _draw() -> void:
-	draw_line(Vector2.ZERO, Vector2.UP * 75, Color.GREEN, 2)
+	#draw_line(Vector2.ZERO, Vector2.UP * 75, Color.GREEN, 2)
 	
 	var left_dir = Vector2.UP.rotated(-SENSOR_ANGLE)
 	var right_dir = Vector2.UP.rotated(SENSOR_ANGLE)

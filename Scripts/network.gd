@@ -45,7 +45,7 @@ func _init() -> void:
 		else:
 			h.side = "right"
 		hidden_neurons.append(h)
-	#TODO: make the sensor to hidden connections pick from the appropriate pool, and for hidden to motor connections isntead of connecting everything, eight the inital synapse strength based on side, left side hidden connection to left motor is stronger than to right etc. w
+	#TODO: make the sensor to hidden connections pick from the appropriate pool, and for hidden to motor connections isntead of connecting everything, weight the inital synapse strength based on side, left side hidden connection to left motor is stronger than to right etc. w
 
 	
 	global_time = 0.0
