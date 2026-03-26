@@ -4,19 +4,25 @@ extends CharacterBody2D
 #network with all the neurons and synapses. 
 var snn
 
-#movement variables
+#reference for the environment node
+var env
+
+@export_category("Movement Variables")
 @export var speed := 60.0
 @export var turn_speed := 2.0
 var angular_velocity := 0.0
 
-#sensor variables
+@export_category("Sensor Variables")
 const SENSOR_ANGLE := deg_to_rad(30)
-const SENSOR_RANGE := 40.0
+@export var SENSOR_RANGE := 10.0
 const SENSOR_CURRENT := 0.2
+@export var FOOD_SENSITIVITY := 1.0
 
 signal food_eaten
 
 func _ready() -> void:
+	env = get_tree().get_first_node_in_group("environment")
+	
 	Engine.time_scale = 0.25
 	snn = Network.new()
 	add_child(snn)
@@ -75,26 +81,11 @@ func get_sensor_directions(is_left: bool) -> Vector2:
 func sense_food(is_left: bool) -> float:
 	 #look for higher density of food in sensor cone
 	var dir = get_sensor_directions(is_left)
-	var foods = get_tree().get_nodes_in_group("food")
 	
-	var total_strength := 0.0
+	#sample a point in the sensor direction at the distance of the sensor range
+	var sample_point = global_position + (dir.normalized() * SENSOR_RANGE)
 	
-	for food in foods:
-		var to_food = food.global_position - global_position
-		var distance = to_food.length()
-		
-		if distance > SENSOR_RANGE:
-			continue
-		
-		var alignment = dir.normalized().dot(to_food.normalized())
-		if alignment <= 0.0:
-			continue
-		
-		var strength = alignment * (1.0 - distance / SENSOR_RANGE)
-		total_strength += strength
-	
-	#this normalises so a single close-aligned food has a lower value where as a dense cluster cwould be closer to a high value closer to 1.0, 
-	return clamp(total_strength / 5.0, 0.0, 1.0)
+	return env.get_nutrition_at(sample_point) * FOOD_SENSITIVITY
 
 func _on_mouth_area_entered(area: Area2D):
 	if area.is_in_group("food"):

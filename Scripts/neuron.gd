@@ -4,6 +4,7 @@ extends Node
 class_name Neuron
 
 var neuron_name := "temp_neuron_name"  
+var side = "shared"
 
 var v := 0.0 #membrane potential
 var v_rest := 0.0 # resting potential

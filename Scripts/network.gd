@@ -36,11 +36,16 @@ func _init() -> void:
 	
 	for i in range(HIDDEN_COUNT):
 		var h = Neuron.new()
-		if i < 10:
-			h.neuron_name = "Hidden_%02d" % i
+		h.neuron_name = "Hidden_%02d" % i
+		#first  six lean left, last six lean right, middle 4 are shared
+		if i < 6:
+			h.side = "left"
+		elif i < 10:
+			h.side = "shared"
 		else:
-			h.neuron_name = "Hidden_%s" % i
+			h.side = "right"
 		hidden_neurons.append(h)
+	#TODO: make the sensor to hidden connections pick from the appropriate pool, and for hidden to motor connections isntead of connecting everything, eight the inital synapse strength based on side, left side hidden connection to left motor is stronger than to right etc. w
 
 	
 	global_time = 0.0

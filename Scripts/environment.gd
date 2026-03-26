@@ -12,10 +12,12 @@ var dish_grid_points := []
 var noise
 
 func _ready():
+	add_to_group("environment")
+	
 	var grid_size = dish_radius * 2
 	var point_count = (grid_size / dish_resolution) * (grid_size / dish_resolution)
 	noise = FastNoiseLite.new()
-	noise.get_image(grid_size,grid_size,false,false,true)
+	#noise.get_image(grid_size,grid_size,false,false,true)
 	
 	for	row in range(point_count+1):
 		for col in range(point_count+1):
@@ -29,6 +31,12 @@ func _ready():
 
 func _draw() -> void:
 	for point in dish_grid_points:
-		draw_circle(point,dish_resolution * 0.5,Color.from_rgba8((255 * -noise.get_noise_2d(point.x, point.y)),(255 * noise.get_noise_2d(point.x, point.y)),(255 * -noise.get_noise_2d(point.x, point.y))))
-		
-	
+		var n = (noise.get_noise_2d(point.x, point.y) + 1.0) / 2.0
+		draw_circle(point, dish_resolution * 0.5, Color(1.0 - n, n, 0.0))
+
+func get_nutrition_at(pos: Vector2) -> float:
+	if pos.distance_to(dish_center) <= dish_radius:
+		var n = (noise.get_noise_2d(pos.x, pos.y) + 1.0) / 2.0
+		return n
+	else:
+		return 0.0
