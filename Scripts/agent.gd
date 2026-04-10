@@ -8,9 +8,10 @@ var snn
 var env
 
 @export_category("Movement Variables")
-@export var speed := 60.0
+@export var speed := 20.0
 @export var turn_speed := 2.0
 var angular_velocity := 0.0
+@export var time_scale := 1.0
 
 @export_category("Sensor Variables")
 const SENSOR_ANGLE := deg_to_rad(30)
@@ -23,7 +24,7 @@ signal food_eaten
 func _ready() -> void:
 	env = get_tree().get_first_node_in_group("environment")
 	
-	Engine.time_scale = 0.25
+	Engine.time_scale = 1
 	snn = Network.new()
 	add_child(snn)
 	

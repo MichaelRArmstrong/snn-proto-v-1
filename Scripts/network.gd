@@ -45,7 +45,7 @@ func _init() -> void:
 		else:
 			h.side = "right"
 		hidden_neurons.append(h)
-	#TODO: make the sensor to hidden connections pick from the appropriate pool, and for hidden to motor connections isntead of connecting everything, weight the inital synapse strength based on side, left side hidden connection to left motor is stronger than to right etc. w
+	#TODO: make the sensor to hidden connections pick from the appropriate pool, and for hidden to motor connections isntead of connecting everything,
 
 	
 	global_time = 0.0
@@ -55,26 +55,19 @@ func _init() -> void:
 # > setup synapse connections from hidden to motor
 	
 	#sensor to hidden
-	var s_to_h := []
-	for i in 4: #Left sensor
-		var h = hidden_neurons.pick_random()
-		while h in s_to_h:
-			h = hidden_neurons.pick_random() #should work ¯\_ツ)_/¯
+	var left_pool = hidden_neurons.filter(func(n): return n.side == "left" or n.side == "shared")
+	var right_pool = hidden_neurons.filter(func(n): return n.side == "right" or n.side == "shared")
 	
-		var s = Synapse.new(lsensor_neuron, h)
+	#left
+	for h in left_pool:
+		var s = Synapse.new(lsensor_neuron, h, randf_range(0.1, 0.4))
 		add_child(s)
 		synapse_array.append(s)
-		s_to_h.append(h)
-	s_to_h.clear()
-	for i in 4: #Right sensor
-		var h = hidden_neurons.pick_random()
-		while h in s_to_h:
-			h = hidden_neurons.pick_random() 
-	
-		var s = Synapse.new(rsensor_neuron, h)
+	#right
+	for h in right_pool:
+		var s = Synapse.new(rsensor_neuron, h, randf_range(0.1, 0.4))
 		add_child(s)
 		synapse_array.append(s)
-		s_to_h.append(h)
 	
 	#hidden to hidden
 	for h in hidden_neurons: #for each hidden neuron
@@ -84,19 +77,32 @@ func _init() -> void:
 			while  h2 == h or h2 in h_to_h:
 				h2 = hidden_neurons.pick_random() #pick a random neuron besides self and not already connected
 			
-			var s = Synapse.new(h, h2)
+			var s = Synapse.new(h, h2, randf_range(0.05, 0.25))
 			add_child(s)
 			synapse_array.append(s)
 			h_to_h.append(h2)
 	
 	#hidden to motor
-	var h_to_m := [] #TODO: is this wrong i might not be checkign for overlaps im not reading into it rn tho glhf
-	#for now all hidden to both motors with random weights
+	var h_to_m := [] 
+	#weight the inital synapse strength based on side, left side hidden connection to left motor is stronger than to right etc.
 	for h in hidden_neurons:
-		var lms = Synapse.new(h, lmotor_neuron, 0.4)
+		var lms
+		var rms
+		
+		if (h.side == "left"):
+			lms = Synapse.new(h, lmotor_neuron, 0.6)
+			rms = Synapse.new(h, rmotor_neuron, 0.2)
+		
+		if (h.side == "shared"):
+			lms = Synapse.new(h, lmotor_neuron, 0.2)
+			rms = Synapse.new(h, rmotor_neuron, 0.2)
+		
+		if (h.side == "right"):
+			lms = Synapse.new(h, lmotor_neuron, 0.2)
+			rms = Synapse.new(h, rmotor_neuron, 0.6)
+		
 		add_child(lms)
 		synapse_array.append(lms)
-		var rms = Synapse.new(h, rmotor_neuron, 0.4)
 		add_child(rms)
 		synapse_array.append(rms)
 	

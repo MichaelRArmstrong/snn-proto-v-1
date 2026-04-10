@@ -14,7 +14,7 @@ var post_syn_neuron
 var agent
 
 func _init(pre: Neuron, post: Neuron, w: float = 1.0) -> void:
-	weight = randf_range(0.05, 0.2)
+	weight = w
 	pre_syn_neuron = pre
 	post_syn_neuron = post
 	
@@ -53,5 +53,5 @@ func update_eligibility(delta_time: float): #eligibility meaning how much the re
 
 func _on_food_eaten(reward: float):
 	weight += reward * eligibility
-	weight = clamp(weight, 0.0, 0.5)#NOTE needs adjusting probably
+	weight = clamp(weight, 0.0, 1.0)#NOTE needs adjusting probably
 	return
