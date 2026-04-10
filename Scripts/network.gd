@@ -60,12 +60,12 @@ func _init() -> void:
 	
 	#left
 	for h in left_pool:
-		var s = Synapse.new(lsensor_neuron, h, randf_range(0.1, 0.4))
+		var s = Synapse.new(lsensor_neuron, h, randf_range(0.1, 0.25))
 		add_child(s)
 		synapse_array.append(s)
 	#right
 	for h in right_pool:
-		var s = Synapse.new(rsensor_neuron, h, randf_range(0.1, 0.4))
+		var s = Synapse.new(rsensor_neuron, h, randf_range(0.1, 0.25))
 		add_child(s)
 		synapse_array.append(s)
 	
@@ -90,16 +90,16 @@ func _init() -> void:
 		var rms
 		
 		if (h.side == "left"):
-			lms = Synapse.new(h, lmotor_neuron, 0.6)
-			rms = Synapse.new(h, rmotor_neuron, 0.2)
+			lms = Synapse.new(h, lmotor_neuron, 0.3)
+			rms = Synapse.new(h, rmotor_neuron, 0.05)
 		
 		if (h.side == "shared"):
-			lms = Synapse.new(h, lmotor_neuron, 0.2)
-			rms = Synapse.new(h, rmotor_neuron, 0.2)
+			lms = Synapse.new(h, lmotor_neuron, 0.125)
+			rms = Synapse.new(h, rmotor_neuron, 0.125)
 		
 		if (h.side == "right"):
-			lms = Synapse.new(h, lmotor_neuron, 0.2)
-			rms = Synapse.new(h, rmotor_neuron, 0.6)
+			lms = Synapse.new(h, lmotor_neuron, 0.05)
+			rms = Synapse.new(h, rmotor_neuron, 0.3)
 		
 		add_child(lms)
 		synapse_array.append(lms)
