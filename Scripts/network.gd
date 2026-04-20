@@ -108,7 +108,7 @@ func _init() -> void:
 	
 	return
 
-func update(delta: float) -> void: #update funciton, could handle STDP/synaptic weight changes here idk 
+func update(delta: float, reward: float) -> void: #update funciton, could handle STDP/synaptic weight changes here idk 
 	global_time += delta
 	
 	#sensor step
@@ -118,14 +118,18 @@ func update(delta: float) -> void: #update funciton, could handle STDP/synaptic 
 	#hidden step
 	for hidden in hidden_neurons:
 		hidden.step(delta, global_time)
-	#synapse updates should occur naturally on neuron spikes
 	
 	#motor step
 	lmotor_neuron.step(delta, global_time)
 	rmotor_neuron.step(delta, global_time)
 	
+	#synapse updates should occur naturally on neuron spikes, but weight updates still nneed calling
+	for s in synapse_array:
+		s.update_weight(delta, reward)
 	
-	
-	
+	var avg = 0.0
+	for s in synapse_array:
+		avg += s.weight
+	print(avg / synapse_array.size())
 	
 	return

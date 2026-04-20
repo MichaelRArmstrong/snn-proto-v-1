@@ -14,17 +14,16 @@ var angular_velocity := 0.0
 @export var time_scale := 1.0
 
 @export_category("Sensor Variables")
-const SENSOR_ANGLE := deg_to_rad(30)
+const SENSOR_ANGLE := deg_to_rad(60)
 @export var SENSOR_RANGE := 10.0
 const SENSOR_CURRENT := 0.2
 @export var FOOD_SENSITIVITY := 1.0
 
-signal food_eaten
 
 func _ready() -> void:
 	env = get_tree().get_first_node_in_group("environment")
 	
-	Engine.time_scale = 1
+	Engine.time_scale = time_scale
 	snn = Network.new()
 	add_child(snn)
 	
@@ -37,8 +36,9 @@ func _physics_process(delta: float) -> void:
 	snn.lsensor_neuron.input_current = sense_food(true)
 	snn.rsensor_neuron.input_current = sense_food(false)
 	
-	#network update loop
-	snn.update(delta)
+	#network update loop + stdp reward
+	var reward = env.get_nutrition_at(global_position)
+	snn.update(delta, reward)
 	
 	if snn.lsensor_neuron.spiked:
 		print("Left Spiked")
@@ -62,7 +62,7 @@ func _physics_process(delta: float) -> void:
 	var forward = Vector2.UP.rotated(rotation)
 	velocity = forward * speed
 	
-	move_and_slide()
+	move_and_slide()	
 	
 	return
 
@@ -84,15 +84,14 @@ func sense_food(is_left: bool) -> float:
 	var dir = get_sensor_directions(is_left)
 	
 	#sample a point in the sensor direction at the distance of the sensor range
-	var sample_point = global_position + (dir.normalized() * SENSOR_RANGE)
+	var sample_point1 = global_position + (dir.normalized() * (SENSOR_RANGE * 0.5))
+	var sample_point2 = global_position + (dir.normalized() * SENSOR_RANGE)
+	var sample_point3 = global_position + (dir.normalized() * (SENSOR_RANGE * 1.5))
 	
-	return env.get_nutrition_at(sample_point) * FOOD_SENSITIVITY
-
-func _on_mouth_area_entered(area: Area2D):
-	if area.is_in_group("food"):
-		eat_food(area)
-
-func eat_food(food):
-	#emit reward signal
-	food_eaten.emit(1.0)
-	food.queue_free()
+	var n1 = env.get_nutrition_at(sample_point1) * FOOD_SENSITIVITY
+	var n2 = env.get_nutrition_at(sample_point2) * FOOD_SENSITIVITY
+	var n3 = env.get_nutrition_at(sample_point3) * FOOD_SENSITIVITY
+	
+	var avg = (n1 + n2 + n3) / 3
+	
+	return avg

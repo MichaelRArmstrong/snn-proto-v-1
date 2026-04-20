@@ -10,6 +10,7 @@ var weight := 0.1
 var eligibility := 0.0
 var pre_syn_neuron
 var post_syn_neuron
+var LEARNING_RATE:= 0.005
 
 var agent
 
@@ -21,16 +22,13 @@ func _init(pre: Neuron, post: Neuron, w: float = 1.0) -> void:
 	pre_syn_neuron.connect("spiked_signal", Callable(self, "_on_pre_spike")) #signals from neuron spikes
 	post_syn_neuron.connect("spiked_signal", Callable( self, "_on_post_spike")) #very useful icl
 
-func _ready():
-	agent = get_parent().get_parent()
-	agent.connect("food_eaten", Callable(self, "_on_food_eaten"))
-
 func _on_pre_spike(neuron):
 	var dt = post_syn_neuron.last_spike_time - neuron.last_spike_time
 	if post_syn_neuron.last_spike_time > 0:
 		update_eligibility(dt)
 	
-	post_syn_neuron.input_current += weight
+	post_syn_neuron.input_current += clamp(weight, 0.0, 1.0)
+
 
 func _on_post_spike(neuron):
 	var dt = neuron.last_spike_time - pre_syn_neuron.last_spike_time
@@ -38,8 +36,8 @@ func _on_post_spike(neuron):
 		update_eligibility(dt)
 
 func update_eligibility(delta_time: float): #eligibility meaning how much the reward will affect the weight of the synapse once recievedd
-	#20ms STDP window
-	var tau = 0.5 
+	#STDP window
+	var tau = 0.05 
 	#always between 0 and 1
 	var magnitude = exp(-abs(delta_time) / tau) 
 	
@@ -51,7 +49,8 @@ func update_eligibility(delta_time: float): #eligibility meaning how much the re
 	#eligibility decay
 	eligibility *= 0.95
 
-func _on_food_eaten(reward: float):
-	weight += reward * eligibility
-	weight = clamp(weight, 0.0, 1.0)#NOTE needs adjusting probably
-	return
+func update_weight(delta: float, reward: float) -> void:
+	eligibility *= 0.99
+	
+	weight += reward * eligibility * LEARNING_RATE * delta
+	weight = clamp(weight, 0.05, 1.0)
