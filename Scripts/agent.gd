@@ -27,10 +27,6 @@ func _ready() -> void:
 	snn = Network.new()
 	add_child(snn)
 	
-	var debug_window = preload("res://Scenes/SNNDebugWindow.tscn").instantiate()
-	debug_window.set_network(snn)
-	add_child(debug_window)
-	
 
 func _physics_process(delta: float) -> void:
 	snn.lsensor_neuron.input_current = sense_food(true)
@@ -40,11 +36,11 @@ func _physics_process(delta: float) -> void:
 	var reward = env.get_nutrition_at(global_position)
 	snn.update(delta, reward)
 	
-	if snn.lsensor_neuron.spiked:
-		print("Left Spiked")
+	#if snn.lsensor_neuron.spiked:
+		#print("Left Spiked")
 	
-	if snn.rsensor_neuron.spiked:
-		print("Right Spiked")
+	#if snn.rsensor_neuron.spiked:
+		#print("Right Spiked")
 	
 	
 	var torque := 0.0

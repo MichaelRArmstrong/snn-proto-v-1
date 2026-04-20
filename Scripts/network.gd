@@ -130,6 +130,6 @@ func update(delta: float, reward: float) -> void: #update funciton, could handle
 	var avg = 0.0
 	for s in synapse_array:
 		avg += s.weight
-	print(avg / synapse_array.size())
+	#print(avg / synapse_array.size())
 	
 	return

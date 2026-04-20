@@ -1,0 +1,62 @@
+[gd_scene format=3 uid="uid://7u3wf0akspk0"]
+
+[ext_resource type="Script" uid="uid://fbgwlra3mdub" path="res://Scripts/ui_main.gd" id="1_t7o32"]
+[ext_resource type="Script" uid="uid://db8mx5j8oxoak" path="res://Scripts/hierarchy_panel.gd" id="2_ts3bh"]
+[ext_resource type="PackedScene" uid="uid://cdnllbuklr8j4" path="res://Scenes/world.tscn" id="2_w84oc"]
+[ext_resource type="Script" uid="uid://212l5appmxl5" path="res://Scripts/network_visualiser.gd" id="3_ts3bh"]
+[ext_resource type="Script" uid="uid://cmyjhcrj1s5sg" path="res://Scripts/inspector_panel.gd" id="5_mwctd"]
+
+[node name="UiMain" type="Control" unique_id=2051923374]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_t7o32")
+
+[node name="MainLayout" type="HBoxContainer" parent="." unique_id=672135696]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="LeftPanel" type="PanelContainer" parent="MainLayout" unique_id=362091940]
+custom_minimum_size = Vector2(320, 0)
+layout_mode = 2
+
+[node name="HierarchyPanel" type="VBoxContainer" parent="MainLayout/LeftPanel" unique_id=1086043954]
+layout_mode = 2
+script = ExtResource("2_ts3bh")
+
+[node name="CentreColumn" type="VBoxContainer" parent="MainLayout" unique_id=1799754649]
+custom_minimum_size = Vector2(540, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="SubViewportContainer" type="SubViewportContainer" parent="MainLayout/CentreColumn" unique_id=1790196975]
+custom_minimum_size = Vector2(540, 540)
+layout_mode = 2
+
+[node name="SubViewport" type="SubViewport" parent="MainLayout/CentreColumn/SubViewportContainer" unique_id=2064425733]
+handle_input_locally = false
+size = Vector2i(540, 540)
+render_target_update_mode = 4
+
+[node name="World" parent="MainLayout/CentreColumn/SubViewportContainer/SubViewport" unique_id=1370418284 instance=ExtResource("2_w84oc")]
+
+[node name="NetworkVisualiser" type="Control" parent="MainLayout/CentreColumn" unique_id=702224394]
+layout_mode = 2
+size_flags_vertical = 3
+script = ExtResource("3_ts3bh")
+metadata/_custom_type_script = "uid://212l5appmxl5"
+
+[node name="RightPanel" type="PanelContainer" parent="MainLayout" unique_id=2025181366]
+custom_minimum_size = Vector2(320, 0)
+layout_mode = 2
+
+[node name="InspectorPanel" type="VBoxContainer" parent="MainLayout/RightPanel" unique_id=1303069240]
+layout_mode = 2
+script = ExtResource("5_mwctd")
