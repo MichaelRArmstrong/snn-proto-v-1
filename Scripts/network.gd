@@ -4,6 +4,11 @@ extends Node
 class_name Network
 
 var global_time := 0.0
+var last_reward := 0.0
+
+var reward_history: Array = [] #might be bloaty but good for analysis
+var reward_min := 1.0
+var reward_max := 0.0
 
 #Sensor neurons: 4, 
 #> food on left/right - 2
@@ -27,6 +32,11 @@ var rmotor_neuron := Neuron.new()
 #synapses
 var synapse_array := []
 
+
+var spike_count := 0
+var spike_rate := 0.0
+var spike_timer := 0.0
+
 func _init() -> void:
 	#assigning names
 	lsensor_neuron.neuron_name = "L_Sensor"
@@ -45,10 +55,9 @@ func _init() -> void:
 		else:
 			h.side = "right"
 		hidden_neurons.append(h)
-	#TODO: make the sensor to hidden connections pick from the appropriate pool, and for hidden to motor connections isntead of connecting everything,
-
 	
 	global_time = 0.0
+	
 # In the networks constructor (here) i need it to:
 # > setup sensor to hidden synapse connections
 # > setup synapse connections from hidden to hidden
@@ -110,6 +119,10 @@ func _init() -> void:
 
 func update(delta: float, reward: float) -> void: #update funciton, could handle STDP/synaptic weight changes here idk 
 	global_time += delta
+	last_reward = reward
+	reward_history.append(reward)
+	reward_min = min(reward_min, reward)
+	reward_max = max(reward_max, reward)
 	
 	#sensor step
 	lsensor_neuron.step(delta, global_time)
@@ -118,6 +131,10 @@ func update(delta: float, reward: float) -> void: #update funciton, could handle
 	#hidden step
 	for hidden in hidden_neurons:
 		hidden.step(delta, global_time)
+		
+		#spike rate measurments
+		if hidden.spiked:
+			spike_count += 1
 	
 	#motor step
 	lmotor_neuron.step(delta, global_time)
@@ -131,5 +148,17 @@ func update(delta: float, reward: float) -> void: #update funciton, could handle
 	for s in synapse_array:
 		avg += s.weight
 	#print(avg / synapse_array.size())
+	
+	var other_neurons = [lsensor_neuron, rsensor_neuron, lmotor_neuron, rmotor_neuron]
+	for n in other_neurons:
+		if n.spiked:
+			spike_count += 1
+	
+	spike_timer += delta
+	if spike_timer > 1.0:
+		spike_rate = spike_count
+		spike_count = 0
+		spike_timer = 0.0
+	
 	
 	return

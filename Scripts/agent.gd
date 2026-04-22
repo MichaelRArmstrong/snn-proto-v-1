@@ -60,6 +60,18 @@ func _physics_process(delta: float) -> void:
 	
 	move_and_slide()	
 	
+	#boundary logic
+	var dist = global_position.distance_to(env.dish_center)
+	if dist > env.dish_radius:
+		var inward = (env.dish_center - global_position).normalized()
+		#pos correction
+		global_position = env.dish_center - inward * (env.dish_radius - 5.0)
+		#rot correction
+		var reflected = forward.reflect(inward)
+		rotation = reflected.angle() - PI/2
+		angular_velocity = 0.0
+	
+	
 	return
 
 func _draw() -> void:
@@ -78,6 +90,8 @@ func get_sensor_directions(is_left: bool) -> Vector2:
 func sense_food(is_left: bool) -> float:
 	 #look for higher density of food in sensor cone
 	var dir = get_sensor_directions(is_left)
+	
+	#TODO: Make it checkk if its sensing sample points that are outside the dish boundss, if so, it needs to turn back, s
 	
 	#sample a point in the sensor direction at the distance of the sensor range
 	var sample_point1 = global_position + (dir.normalized() * (SENSOR_RANGE * 0.5))

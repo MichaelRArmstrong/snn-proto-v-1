@@ -10,6 +10,8 @@ var title_label: Label
 var stats_label: RichTextLabel
 var synapse_list: VBoxContainer
 
+var sparkline: Sparkline
+
 func setup(n: Network):
 	network = n
 	
@@ -38,6 +40,11 @@ func setup(n: Network):
 	synapse_list = VBoxContainer.new()
 	synapse_list.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	scroll.add_child(synapse_list)
+	
+	sparkline = Sparkline.new()
+	sparkline.custom_minimum_size = Vector2(0, 80)
+	sparkline.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	add_child(sparkline)
 
 func inspect_neuron(neuron: Neuron):
 	current_neuron = neuron
@@ -45,6 +52,7 @@ func inspect_neuron(neuron: Neuron):
 	title_label.text = neuron.neuron_name
 	_rebuild_synapse_list()
 	refresh()
+	sparkline.watch(neuron)
 
 func _rebuild_synapse_list():
 	for child in synapse_list.get_children():

@@ -4,7 +4,9 @@
 [ext_resource type="Script" uid="uid://db8mx5j8oxoak" path="res://Scripts/hierarchy_panel.gd" id="2_ts3bh"]
 [ext_resource type="PackedScene" uid="uid://cdnllbuklr8j4" path="res://Scenes/world.tscn" id="2_w84oc"]
 [ext_resource type="Script" uid="uid://212l5appmxl5" path="res://Scripts/network_visualiser.gd" id="3_ts3bh"]
+[ext_resource type="Script" uid="uid://yadq1ghuobw4" path="res://Scripts/stats_bar.gd" id="5_7dylk"]
 [ext_resource type="Script" uid="uid://cmyjhcrj1s5sg" path="res://Scripts/inspector_panel.gd" id="5_mwctd"]
+[ext_resource type="Script" uid="uid://iniwii7aabah" path="res://Scripts/reward_history.gd" id="6_7dylk"]
 
 [node name="UiMain" type="Control" unique_id=2051923374]
 layout_mode = 3
@@ -52,6 +54,16 @@ layout_mode = 2
 size_flags_vertical = 3
 script = ExtResource("3_ts3bh")
 metadata/_custom_type_script = "uid://212l5appmxl5"
+
+[node name="StatsBar" type="HBoxContainer" parent="MainLayout/CentreColumn" unique_id=669089765]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+script = ExtResource("5_7dylk")
+
+[node name="RewardHistory" type="Control" parent="MainLayout/CentreColumn" unique_id=1281355861]
+custom_minimum_size = Vector2(0, 80)
+layout_mode = 2
+script = ExtResource("6_7dylk")
 
 [node name="RightPanel" type="PanelContainer" parent="MainLayout" unique_id=2025181366]
 custom_minimum_size = Vector2(320, 0)

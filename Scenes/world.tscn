@@ -6,7 +6,6 @@
 [node name="World" type="Node2D" unique_id=1370418284 groups=["environment"]]
 script = ExtResource("1_fj7yv")
 dish_radius = 250
-dish_resolution = 10
 metadata/_edit_horizontal_guides_ = [539.0]
 metadata/_edit_vertical_guides_ = [540.0]
 
@@ -14,3 +13,4 @@ metadata/_edit_vertical_guides_ = [540.0]
 position = Vector2(267, 267)
 turn_speed = 1000.0
 SENSOR_RANGE = 15.0
+FOOD_SENSITIVITY = 0.1

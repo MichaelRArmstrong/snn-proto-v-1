@@ -13,6 +13,10 @@ var leak_rate := 0.2 #decay over time
 var spiked := false
 var last_spike_time := 0.0
 
+#for ui
+const V_HISTORY_SIZE := 200
+var v_history: Array = []
+
 var input_current := 0.0 #for sensor neurons this will be set by the sensors, teh rest will recieve this from their synapses, probably
 
 signal spiked_signal
@@ -21,6 +25,11 @@ func step(delta: float, current_time: float) -> bool:
 	#integrate
 	v += input_current
 	input_current = 0.0 
+	
+	#record integrated v
+	v_history.append(v)
+	if v_history.size() > V_HISTORY_SIZE:
+		v_history.pop_front()
 	
 	#leak
 	v -= v * leak_rate * delta

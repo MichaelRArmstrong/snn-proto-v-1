@@ -5,7 +5,7 @@ extends Node2D
 @export var dish_center := Vector2(270,270)
 @export var dish_radius := 400
 @export var deadzone_radius := 50
-@export var dish_resolution := 5 #Space between each point in the field
+@export var dish_resolution := 10 #Space between each point in the field
 
 #circular dish shaped field of points, nutrition value lerped between them in a gradient.
 var dish_grid_points := []
@@ -32,7 +32,9 @@ func _ready():
 func _draw() -> void:
 	for point in dish_grid_points:
 		var n = (noise.get_noise_2d(point.x, point.y) + 1.0) / 2.0
-		draw_circle(point, dish_resolution * 0.5, Color(1.0 - n, n, 0.0))
+		var pos: Vector2 = point
+		#draw_circle(point, dish_resolution * 0.5, Color(1.0 - n, n, 0.0))
+		draw_rect(Rect2(pos, Vector2(dish_resolution, dish_resolution)), Color(1.0 - n, n, 0.0))
 
 func get_nutrition_at(pos: Vector2) -> float:
 	if pos.distance_to(dish_center) <= dish_radius:

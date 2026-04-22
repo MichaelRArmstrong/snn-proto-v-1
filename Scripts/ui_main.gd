@@ -10,6 +10,8 @@ var selected_neuron: Neuron = null
 @onready var network_visualiser = $MainLayout/CentreColumn/NetworkVisualiser
 @onready var hierarchy_panel = $MainLayout/LeftPanel/HierarchyPanel
 @onready var inspector_panel = $MainLayout/RightPanel/InspectorPanel
+@onready var stats_bar = $MainLayout/CentreColumn/StatsBar
+@onready var reward_history = $MainLayout/CentreColumn/RewardHistory
 
 func _ready() -> void:
 	#wait one frame for subviewport world scene to be fully initialised
@@ -21,6 +23,8 @@ func _ready() -> void:
 	network_visualiser.setup(network)
 	hierarchy_panel.setup(network)
 	inspector_panel.setup(network)
+	stats_bar.setup(network)
+	reward_history.setup(network)
 	
 	#wire selection signal from hierarchy to inspector and visualiser
 	hierarchy_panel.neuron_selected.connect(_on_neuron_selected)
@@ -33,4 +37,8 @@ func _process(delta: float) -> void:
 	#live update visualiser and inspector
 	if selected_neuron != null:
 		inspector_panel.refresh()
+	
+	stats_bar.refresh()
+	
+	
 	
