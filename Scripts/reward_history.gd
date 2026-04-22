@@ -1,40 +1,27 @@
-extends Control
+extends VBoxContainer
 
 class_name RewardHistory
 
 var network: Network = null
-
-const LINE_COL := Color(0.7,0.3,0.1,0.9)
-const BG_COL := Color(0.05, 0.05, 0.05, 1.0)
+var plot: RewardPlot
+var slider: HSlider
 
 func setup(n: Network):
 	network = n
+	
+	plot = RewardPlot.new()
+	plot.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	add_child(plot)
+	
+	slider = HSlider.new()
+	slider.custom_minimum_size = Vector2(0, 20)
+	slider.min_value = 2
+	slider.max_value = 1000
+	slider.value = 1000
+	add_child(slider)
+	
+	plot.network = network
+	plot.slider = slider
 
-func _process(delta: float) -> void:
-	queue_redraw()
-
-func _draw() -> void:
-	if network == null:
-		return
-	var count = network.reward_history.size()
-	if count < 2:
-		return
-	draw_rect(Rect2(Vector2.ZERO, size), BG_COL)
-	
-	
-	var w = size.x
-	var h = size.y
-		
-	#setup polyline points
-	var points: PackedVector2Array = []
-	for i in range(count):
-		var x = (float(i) / float(count - 1)) * w
-		var range = network.reward_max - network.reward_min
-		if range < 0.01:
-			return
-		var normalised = (network.reward_history[i] - network.reward_min) / range
-		var y = h - (normalised * h * 0.9) - (h * 0.05)
-		points.append(Vector2(x, y))
-	
-	draw_polyline(points, LINE_COL, 1.5)
-	
+func _process(_delta):
+	slider.max_value = max(1000, network.reward_history.size())

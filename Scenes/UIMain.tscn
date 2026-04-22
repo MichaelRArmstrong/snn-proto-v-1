@@ -60,7 +60,7 @@ custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
 script = ExtResource("5_7dylk")
 
-[node name="RewardHistory" type="Control" parent="MainLayout/CentreColumn" unique_id=1281355861]
+[node name="RewardHistory" type="VBoxContainer" parent="MainLayout/CentreColumn" unique_id=49582451]
 custom_minimum_size = Vector2(0, 80)
 layout_mode = 2
 script = ExtResource("6_7dylk")
