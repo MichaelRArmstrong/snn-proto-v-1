@@ -25,3 +25,5 @@ func setup(n: Network):
 
 func _process(_delta):
 	slider.max_value = max(1000, network.reward_history.size())
+	if slider.value > network.reward_history.size() * 0.99:
+		slider.value = network.reward_history.size()

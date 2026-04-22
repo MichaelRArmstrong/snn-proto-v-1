@@ -96,7 +96,7 @@ func refresh():
 	
 	if current_synapse != null:
 		stats_label.clear()
-		stats_label.append_text("[b]%s -> %s[/b]\n" % [current_synapse.pre_syn_neuron.neuron_name, current_synapse.pre_syn_neuron.neuron_name])
+		stats_label.append_text("[b]%s -> %s[/b]\n" % [current_synapse.pre_syn_neuron.neuron_name, current_synapse.post_syn_neuron.neuron_name])
 		stats_label.append_text("Weight:		%.4f\n" % current_synapse.weight)
 		stats_label.append_text("Eligibility:	%.4f\n" % current_synapse.eligibility)
 	else:
