@@ -11,6 +11,6 @@ metadata/_edit_vertical_guides_ = [540.0]
 
 [node name="Agent" parent="." unique_id=669835055 instance=ExtResource("1_f3sb7")]
 position = Vector2(267, 267)
-turn_speed = 1000.0
-SENSOR_RANGE = 15.0
-FOOD_SENSITIVITY = 0.1
+turn_speed = 100.0
+sensor_range = 25.0
+sensor_baseline = 0.05
