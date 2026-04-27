@@ -5,12 +5,15 @@
 
 [node name="World" type="Node2D" unique_id=1370418284 groups=["environment"]]
 script = ExtResource("1_fj7yv")
-dish_radius = 250
+dish_center = Vector2(270, 270)
+maps = Array[String](["res://Maps/map_gradient.png", "res://Maps/map_centre.png", "res://Maps/map_blobs.png", "res://Maps/map_noise.png", "res://Maps/map_ring.png", "res://Maps/map_spiral.png"])
+current_map_index = 1
 metadata/_edit_horizontal_guides_ = [539.0]
 metadata/_edit_vertical_guides_ = [540.0]
 
 [node name="Agent" parent="." unique_id=669835055 instance=ExtResource("1_f3sb7")]
-position = Vector2(267, 267)
-turn_speed = 100.0
+z_index = 1
+position = Vector2(270, 270)
+turn_speed = 1.0
 sensor_range = 25.0
 sensor_baseline = 0.05

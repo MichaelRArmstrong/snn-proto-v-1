@@ -69,19 +69,19 @@ func _init() -> void:
 	
 	#left
 	for h in left_pool:
-		var s = Synapse.new(lsensor_neuron, h, randf_range(0.1, 0.25))
+		var s = Synapse.new(lsensor_neuron, h, randf_range(0.3, 0.5))
 		add_child(s)
 		synapse_array.append(s)
 	#right
 	for h in right_pool:
-		var s = Synapse.new(rsensor_neuron, h, randf_range(0.1, 0.25))
+		var s = Synapse.new(rsensor_neuron, h, randf_range(0.3, 0.5))
 		add_child(s)
 		synapse_array.append(s)
 	
 	#hidden to hidden
 	for h in hidden_neurons: #for each hidden neuron
 		var h_to_h := []
-		for i in randi_range(4,6): #between 4 and 6 times
+		for i in randi_range(1,2): #between 4 and 6 times
 			var h2 = hidden_neurons.pick_random()
 			while  h2 == h or h2 in h_to_h:
 				h2 = hidden_neurons.pick_random() #pick a random neuron besides self and not already connected
@@ -103,8 +103,8 @@ func _init() -> void:
 			rms = Synapse.new(h, rmotor_neuron, 0.05)
 		
 		if (h.side == "shared"):
-			lms = Synapse.new(h, lmotor_neuron, 0.125)
-			rms = Synapse.new(h, rmotor_neuron, 0.125)
+			lms = Synapse.new(h, lmotor_neuron, 0.05)
+			rms = Synapse.new(h, rmotor_neuron, 0.05)
 		
 		if (h.side == "right"):
 			lms = Synapse.new(h, lmotor_neuron, 0.05)
@@ -136,6 +136,16 @@ func update(delta: float, reward: float) -> void: #update funciton, could handle
 		if hidden.spiked:
 			spike_count += 1
 	
+	#NOTE: for printing spike ordering
+	#if global_time < 2.0:
+	#	for h in hidden_neurons:
+	#		if h.spiked:
+	#			print("Hidden %s fired at %.4f, LSensor last spike: %.4f, RSensor last spike: %.4f" % [
+	#				h.neuron_name, global_time,
+	#				lsensor_neuron.last_spike_time,
+	#				rsensor_neuron.last_spike_time
+	#			])
+	
 	#motor step
 	lmotor_neuron.step(delta, global_time)
 	rmotor_neuron.step(delta, global_time)
@@ -144,10 +154,22 @@ func update(delta: float, reward: float) -> void: #update funciton, could handle
 	for s in synapse_array:
 		s.update_weight(delta, reward)
 	
-	var avg = 0.0
-	for s in synapse_array:
-		avg += s.weight
+	#NOTE: For getting readouts of avg eligibility, change to .weight for weight
+	#var avg = 0.0
+	#for s in synapse_array:
+	#	avg += s.eligibility
 	#print(avg / synapse_array.size())
+	
+	"""
+	var left_to_lmotor = synapse_array.filter(func(s): 
+		return s.post_syn_neuron == lmotor_neuron and s.pre_syn_neuron.side == "left")
+	var right_to_lmotor = synapse_array.filter(func(s): 
+		return s.post_syn_neuron == lmotor_neuron and s.pre_syn_neuron.side == "right")
+
+	var l_avg = left_to_lmotor.reduce(func(a, s): return a + s.weight, 0.0) / left_to_lmotor.size()
+	var r_avg = right_to_lmotor.reduce(func(a, s): return a + s.weight, 0.0) / right_to_lmotor.size()
+	print("Left->LMotor: %.3f, Right->LMotor: %.3f" % [l_avg, r_avg])
+	#"""
 	
 	var other_neurons = [lsensor_neuron, rsensor_neuron, lmotor_neuron, rmotor_neuron]
 	for n in other_neurons:

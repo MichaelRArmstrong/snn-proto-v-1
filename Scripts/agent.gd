@@ -14,7 +14,7 @@ var env
 var angular_velocity := 0.0
 
 @export_category("Sensor Variables")
-const SENSOR_ANGLE := deg_to_rad(60)
+const SENSOR_ANGLE := deg_to_rad(110)
 const FWD_SENSOR_ANGLE := deg_to_rad(15)
 @export var sensor_range := 10.0
 @export var sensor_baseline := 0.3
@@ -50,13 +50,8 @@ func _physics_process(delta: float) -> void:
 		#print("Right Spiked")
 	
 	
-	var torque := 0.0
-	if snn.lmotor_neuron.spiked:
-		torque -= 1.0
-	if snn.rmotor_neuron.spiked:
-		torque += 1.0
-	
-	angular_velocity += torque * 3.0
+	var turn = snn.rmotor_neuron.v - snn.lmotor_neuron.v
+	angular_velocity += turn * turn_speed
 	angular_velocity *= 0.9
 	
 	rotation += angular_velocity * delta
@@ -69,7 +64,7 @@ func _physics_process(delta: float) -> void:
 	
 	#boundary logic
 	var dist = global_position.distance_to(env.dish_center)
-	if dist > env.dish_radius:
+	if dist > env.dish_radius - 5:
 		var inward = (env.dish_center - global_position).normalized()
 		#pos correction
 		global_position = env.dish_center - inward * (env.dish_radius - 5.0)

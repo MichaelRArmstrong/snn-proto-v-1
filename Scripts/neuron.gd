@@ -12,6 +12,7 @@ var v_thresh := 1.0 #threshold potential
 var leak_rate := 0.2 #decay over time 
 var spiked := false
 var last_spike_time := 0.0
+var trace := 0.0
 
 #for ui
 const V_HISTORY_SIZE := 200
@@ -33,11 +34,13 @@ func step(delta: float, current_time: float) -> bool:
 	
 	#leak
 	v -= v * leak_rate * delta
+	trace *= exp(-delta / 0.05)
 	
 	#fire
 	if v >= v_thresh:
 		v =  0.0
 		spiked = true
+		trace = min(trace + 1.0, 1.0)
 		last_spike_time = current_time
 		emit_signal("spiked_signal", self)
 		return true

@@ -10,7 +10,7 @@ var weight := 0.1
 var eligibility := 0.0
 var pre_syn_neuron
 var post_syn_neuron
-var LEARNING_RATE:= 0.005
+var LEARNING_RATE:= 0.001
 
 var agent
 
@@ -23,34 +23,17 @@ func _init(pre: Neuron, post: Neuron, w: float = 1.0) -> void:
 	post_syn_neuron.connect("spiked_signal", Callable( self, "_on_post_spike")) #very useful icl
 
 func _on_pre_spike(neuron):
-	var dt = post_syn_neuron.last_spike_time - neuron.last_spike_time
-	if post_syn_neuron.last_spike_time > 0:
-		update_eligibility(dt)
-	
+	eligibility -= post_syn_neuron.trace	
 	post_syn_neuron.input_current += clamp(weight, 0.0, 1.0)
 
 
 func _on_post_spike(neuron):
-	var dt = neuron.last_spike_time - pre_syn_neuron.last_spike_time
-	if pre_syn_neuron.last_spike_time > 0:
-		update_eligibility(dt)
-
-func update_eligibility(delta_time: float): #eligibility meaning how much the reward will affect the weight of the synapse once recievedd
-	#STDP window
-	var tau = 0.05 
-	#always between 0 and 1
-	var magnitude = exp(-abs(delta_time) / tau) 
-	
-	if delta_time > 0:
-		eligibility += magnitude   # < potentiation
-	else:
-		eligibility -= magnitude  # < depression
-	
-	#eligibility decay
-	eligibility *= 0.95
+	#if pre_syn_neuron.neuron_name == "L_Sensor" or pre_syn_neuron.neuron_name == "R_Sensor":
+	#	print("pre trace: %.4f" % pre_syn_neuron.trace)
+	eligibility += pre_syn_neuron.trace
 
 func update_weight(delta: float, reward: float) -> void:
-	eligibility *= 0.99
+	eligibility *= 0.95
 	
 	weight += reward * eligibility * LEARNING_RATE * delta
-	weight = clamp(weight, 0.05, 1.0)
+	weight = clamp(weight, 0.05, 0.3)
