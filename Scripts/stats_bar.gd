@@ -53,7 +53,7 @@ func refresh():
 		h_m_sum += s.weight
 	var avg_h_m = h_m_sum / h_m.size()
 	
-	avg_weight_label.text = "Avg Weights: S-H: %.3f, H-H %.3f, H-M %.3f" % [avg_s_h,avg_h_h,avg_h_m]
+	avg_weight_label.text = "Avg Weight: S-H: %.3f, H-H %.3f, H-M %.3f" % [avg_s_h,avg_h_h,avg_h_m]
 	
 	#spike rate
 	spike_rate_label.text = "Spike Rate: %d" % network.spike_rate

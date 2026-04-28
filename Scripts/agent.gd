@@ -40,8 +40,8 @@ func _physics_process(delta: float) -> void:
 	snn.rsensor_neuron.input_current =  sensor_baseline - normalised_diff * sensor_gain
 	
 	#network update loop + stdp reward
-	var reward = env.get_nutrition_at(global_position)
-	snn.update(delta, reward)
+	var nutrition = env.get_nutrition_at(global_position)
+	snn.update(delta, nutrition)
 	
 	#if snn.lsensor_neuron.spiked:
 		#print("Left Spiked")

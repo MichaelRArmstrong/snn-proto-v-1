@@ -10,7 +10,7 @@ var weight := 0.1
 var eligibility := 0.0
 var pre_syn_neuron
 var post_syn_neuron
-var LEARNING_RATE:= 0.001
+var LEARNING_RATE:= 0.0025
 
 var agent
 
@@ -26,7 +26,6 @@ func _on_pre_spike(neuron):
 	eligibility -= post_syn_neuron.trace	
 	post_syn_neuron.input_current += clamp(weight, 0.0, 1.0)
 
-
 func _on_post_spike(neuron):
 	#if pre_syn_neuron.neuron_name == "L_Sensor" or pre_syn_neuron.neuron_name == "R_Sensor":
 	#	print("pre trace: %.4f" % pre_syn_neuron.trace)
@@ -34,6 +33,7 @@ func _on_post_spike(neuron):
 
 func update_weight(delta: float, reward: float) -> void:
 	eligibility *= 0.95
-	
-	weight += reward * eligibility * LEARNING_RATE * delta
-	weight = clamp(weight, 0.05, 0.3)
+	var dw = reward * eligibility * LEARNING_RATE * delta
+	#print("dw: %.8f" % dw) 
+	weight += dw
+	weight = clamp(weight, 0.05, 0.4)

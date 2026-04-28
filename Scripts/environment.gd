@@ -8,6 +8,8 @@ extends Node2D
 #circular dish shaped field of points, nutrition value lerped between them in a gradient.
 @export var maps:Array[String] = []
 @export var current_map_index: int = 0
+@export var useMaps := true
+@export var noise_frequency := 0.01
 var map_image: Image
 var map_sprite: Sprite2D
 
@@ -15,9 +17,15 @@ var map_sprite: Sprite2D
 func _ready():
 	add_to_group("environment")
 	
-	
 	map_sprite = Sprite2D.new()
-	load_map(current_map_index)
+	if useMaps == true:
+		load_map(current_map_index)
+	else:
+		var noise = FastNoiseLite.new()
+		noise.frequency = noise_frequency 
+		map_image = noise.get_seamless_image(512,512)
+		
+		map_sprite.texture = ImageTexture.create_from_image(map_image)
 	map_sprite.position = dish_center
 	add_child(map_sprite)
 
@@ -35,6 +43,7 @@ func get_nutrition_at(pos: Vector2) -> float:
 		pixel_x = clamp(pixel_x, 0, map_image.get_width() - 1)
 		pixel_y = clamp(pixel_y, 0, map_image.get_height() - 1)
 		var n = map_image.get_pixel(pixel_x, pixel_y).r #sample red channel pixel brightness, 0 - 1
+		#n = (n*2) - 1 #map to -1 - 1
 		return n
 	else:
 		return 0.0

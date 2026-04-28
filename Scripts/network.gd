@@ -10,13 +10,10 @@ var reward_history: Array = [] #might be bloaty but good for analysis
 var reward_min := 1.0
 var reward_max := 0.0
 
-#Sensor neurons: 4, 
+#Sensor neurons: 
 #> food on left/right - 2
-#> obstacle proximity - 1
-#> hazard proximity - 1
 var lsensor_neuron := Neuron.new()
 var rsensor_neuron := Neuron.new()
-#ADD REST LATER
 
 #Hidden neurons - 16
 #~4 connections per neuron between hidden and hidden, each sensor neuron should connect to a ~2 hidden neurons.
@@ -160,7 +157,7 @@ func update(delta: float, reward: float) -> void: #update funciton, could handle
 	#	avg += s.eligibility
 	#print(avg / synapse_array.size())
 	
-	"""
+	#"""
 	var left_to_lmotor = synapse_array.filter(func(s): 
 		return s.post_syn_neuron == lmotor_neuron and s.pre_syn_neuron.side == "left")
 	var right_to_lmotor = synapse_array.filter(func(s): 
