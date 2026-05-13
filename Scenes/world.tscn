@@ -7,8 +7,10 @@
 [node name="World" type="Node2D" unique_id=1370418284 groups=["environment"]]
 script = ExtResource("1_fj7yv")
 dish_center = Vector2(270, 270)
-maps = Array[String](["res://Maps/map_gradient.png", "res://Maps/map_centre.png", "res://Maps/map_blobs.png", "res://Maps/map_noise.png", "res://Maps/map_ring.png", "res://Maps/map_spiral.png"])
-current_map_index = 1
+maps = Array[String](["res://Maps/map_gradient.png", "res://Maps/map_centre.png", "res://Maps/map_blobs.png", "res://Maps/map_noise.png", "res://Maps/map_ring.png", "res://Maps/map_spiral.png", "res://Maps/map_blank.png"])
+current_map_index = 7
+useMaps = false
+noise_frequency = 0.03
 metadata/_edit_horizontal_guides_ = [539.0]
 metadata/_edit_vertical_guides_ = [540.0]
 

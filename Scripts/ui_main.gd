@@ -10,6 +10,7 @@ var selected_neuron: Neuron = null
 @onready var network_visualiser = $MainLayout/CentreColumn/NetworkVisualiser
 @onready var hierarchy_panel = $MainLayout/LeftPanel/HierarchyPanel
 @onready var inspector_panel = $MainLayout/RightPanel/InspectorPanel
+@onready var wdt_bar = $MainLayout/CentreColumn/WeightDivergenceTracker
 @onready var stats_bar = $MainLayout/CentreColumn/StatsBar
 @onready var reward_history = $MainLayout/CentreColumn/RewardHistory
 
@@ -23,6 +24,7 @@ func _ready() -> void:
 	network_visualiser.setup(network)
 	hierarchy_panel.setup(network)
 	inspector_panel.setup(network)
+	wdt_bar.setup(network)
 	stats_bar.setup(network)
 	reward_history.setup(network)
 	
@@ -38,7 +40,9 @@ func _process(delta: float) -> void:
 	if selected_neuron != null:
 		inspector_panel.refresh()
 	
+	wdt_bar.refresh()
 	stats_bar.refresh()
+	
 	
 	
 	

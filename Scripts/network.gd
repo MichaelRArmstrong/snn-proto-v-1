@@ -34,6 +34,9 @@ var spike_count := 0
 var spike_rate := 0.0
 var spike_timer := 0.0
 
+var left_syn_weight_divergence_string: String = "null"
+var right_syn_weight_divergence_string: String = "null"
+
 func _init() -> void:
 	#assigning names
 	lsensor_neuron.neuron_name = "L_Sensor"
@@ -115,6 +118,7 @@ func _init() -> void:
 	return
 
 func update(delta: float, reward: float) -> void: #update funciton, could handle STDP/synaptic weight changes here idk 
+	#reward = 0.4
 	global_time += delta
 	last_reward = reward
 	reward_history.append(reward)
@@ -157,6 +161,7 @@ func update(delta: float, reward: float) -> void: #update funciton, could handle
 	#	avg += s.eligibility
 	#print(avg / synapse_array.size())
 	
+	#NOTE: For looking at synaptic weight divergence to try verify that learning mechanism works
 	#"""
 	var left_to_lmotor = synapse_array.filter(func(s): 
 		return s.post_syn_neuron == lmotor_neuron and s.pre_syn_neuron.side == "left")
@@ -165,7 +170,18 @@ func update(delta: float, reward: float) -> void: #update funciton, could handle
 
 	var l_avg = left_to_lmotor.reduce(func(a, s): return a + s.weight, 0.0) / left_to_lmotor.size()
 	var r_avg = right_to_lmotor.reduce(func(a, s): return a + s.weight, 0.0) / right_to_lmotor.size()
-	print("Left->LMotor: %.3f, Right->LMotor: %.3f" % [l_avg, r_avg])
+	var diff = l_avg - r_avg
+	left_syn_weight_divergence_string = ("Left->LMotor - Right->LMotor = %.3f |" % diff )
+	
+	var left_to_rmotor = synapse_array.filter(func(s): 
+		return s.post_syn_neuron == rmotor_neuron and s.pre_syn_neuron.side == "left")
+	var right_to_rmotor = synapse_array.filter(func(s): 
+		return s.post_syn_neuron == rmotor_neuron and s.pre_syn_neuron.side == "right")
+
+	l_avg = left_to_rmotor.reduce(func(a, s): return a + s.weight, 0.0) / left_to_rmotor.size()
+	r_avg = right_to_rmotor.reduce(func(a, s): return a + s.weight, 0.0) / right_to_rmotor.size()
+	diff = r_avg - l_avg
+	right_syn_weight_divergence_string = ("Right->RMotor - Left->RMotor = %.3f" % diff )
 	#"""
 	
 	var other_neurons = [lsensor_neuron, rsensor_neuron, lmotor_neuron, rmotor_neuron]

@@ -10,7 +10,7 @@ var weight := 0.1
 var eligibility := 0.0
 var pre_syn_neuron
 var post_syn_neuron
-var LEARNING_RATE:= 0.0025
+var LEARNING_RATE:= 0.001
 
 var agent
 
